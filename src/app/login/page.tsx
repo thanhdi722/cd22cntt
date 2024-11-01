@@ -5,7 +5,7 @@ import "./index.scss";
 // import { Input } from "./ui/input";
 // import { EyeIcon } from "lucide-react";
 import logo from "../../../public/LOGO.png";
-import background from "../../../public/bacground-login.jpg";
+import background from "../../../public/bacground-login-2.jpg";
 export default function Component() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
@@ -20,7 +20,7 @@ export default function Component() {
       />
       <div className="w-full max-w-5xl grid md:grid-cols-2 rounded-lg overflow-hidden bg-white shadow-xl">
         <div className="p-8 flex flex-col items-center">
-          <div className="w-32 h-32 relative mb-4">
+          <div className="size-40 relative mb-4">
             <Image
               src={logo}
               alt="Lotus Team Logo"
@@ -30,7 +30,7 @@ export default function Component() {
             />
           </div>
           <h1 className="text-2xl font-bold text-center mb-8">
-            We are The Lotus Team
+            We are The TECH ZONE
           </h1>
           <p className="text-muted-foreground mb-6">
             Please login to your account
@@ -62,6 +62,7 @@ export default function Component() {
               </button>
             </div>
             <button
+              style={{ borderRadius: "5px" }}
               className="w-full bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 hover:opacity-90 p-2"
               type="submit"
             >

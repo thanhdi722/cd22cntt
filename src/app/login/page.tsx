@@ -14,6 +14,7 @@ export default function Component() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isMounted, setIsMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -22,6 +23,7 @@ export default function Component() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     const response = await fetch(
       "https://manager-rkz3.onrender.com/api/auth/login",
       {
@@ -42,10 +44,12 @@ export default function Component() {
       localStorage.setItem("role", data.role);
       console.log("Login successful:", data);
       alert("đúng rồi ba");
+      window.location.href = "/home";
     } else {
       alert("sai rồi ba nhập lại đi");
       console.error("Login failed");
     }
+    setIsLoading(false);
   };
 
   if (!isMounted) return null;
@@ -82,7 +86,7 @@ export default function Component() {
             <div className="space-y-2">
               <input
                 type="text"
-                placeholder="Email"
+                placeholder="Nhập email"
                 className="w-full p-2"
                 style={{ border: "1px solid black", borderRadius: "5px" }}
                 value={username}
@@ -106,8 +110,9 @@ export default function Component() {
               style={{ borderRadius: "5px" }}
               className="w-full bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 hover:opacity-90 p-2"
               type="submit"
+              disabled={isLoading}
             >
-              Đăng nhập
+              {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
             </button>
           </form>
           <div className="mt-8 flex items-center gap-2">

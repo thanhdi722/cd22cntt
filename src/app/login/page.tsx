@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import "./index.scss";
@@ -6,7 +7,49 @@ import "./index.scss";
 // import { EyeIcon } from "lucide-react";
 import logo from "../../../public/LOGO.png";
 import background from "../../../public/bacground-login-2.jpg";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+
 export default function Component() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const token = localStorage.getItem("accessToken");
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const response = await fetch(
+      "https://manager-rkz3.onrender.com/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          identifier: username,
+          password: password,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("role", data.role);
+      console.log("Login successful:", data);
+      alert("đúng rồi ba");
+    } else {
+      alert("sai rồi ba nhập lại đi");
+      console.error("Login failed");
+    }
+  };
+
+  if (!isMounted) return null;
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
       <Image
@@ -35,13 +78,15 @@ export default function Component() {
           <p className="text-muted-foreground mb-6">
             Please login to your account
           </p>
-          <form className="w-full max-w-sm space-y-4">
+          <form className="w-full max-w-sm space-y-4" onSubmit={handleLogin}>
             <div className="space-y-2">
               <input
                 type="text"
-                placeholder="Username"
+                placeholder="Email"
                 className="w-full p-2"
                 style={{ border: "1px solid black", borderRadius: "5px" }}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="space-y-2 relative">
@@ -50,14 +95,10 @@ export default function Component() {
                 style={{ border: "1px solid black", borderRadius: "5px" }}
                 placeholder="Password"
                 className="w-full p-2"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
-              <button
-                // variant="ghost"
-                // size="icon"
-                className="absolute right-2 top-0.5"
-                type="button"
-              >
-                {/* <EyeIcon className="h-4 w-4" /> */}
+              <button className="absolute right-2 top-0.5" type="button">
                 <span className="sr-only">Toggle password visibility</span>
               </button>
             </div>

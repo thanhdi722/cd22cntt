@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 // import { Button } from "./ui/button";
@@ -6,7 +7,48 @@ import Image from "next/image";
 import logo from "../../../public/LOGO.png";
 import background from "../../../public/bacground-login-2.jpg";
 import "./index.scss";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 export default function Component() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const response = await fetch(
+      "https://manager-rkz3.onrender.com/api/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          phone_number: phoneNumber,
+          password,
+        }),
+      }
+    );
+
+    if (response.ok) {
+      alert("OK xong rồi!");
+      router.push("/login");
+    } else {
+      alert("sai rồi ba nhập lại đi!");
+    }
+  };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
       <Image
@@ -48,13 +90,35 @@ export default function Component() {
           <p className="text-muted-foreground mb-6">
             Please login to your account
           </p>
-          <form className="w-full max-w-sm space-y-4">
+          <form className="w-full max-w-sm space-y-4" onSubmit={handleSubmit}>
+            <div className="space-y-2">
+              <input
+                type="text"
+                placeholder="Nhập tên người dùng"
+                className="w-full p-2"
+                style={{ border: "1px solid black", borderRadius: "5px" }}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
             <div className="space-y-2">
               <input
                 type="text"
                 placeholder="Nhập email"
                 className="w-full p-2"
                 style={{ border: "1px solid black", borderRadius: "5px" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <input
+                type="text"
+                placeholder="Nhập số điện thoại"
+                className="w-full p-2"
+                style={{ border: "1px solid black", borderRadius: "5px" }}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
             <div className="space-y-2 relative">
@@ -63,6 +127,8 @@ export default function Component() {
                 style={{ border: "1px solid black", borderRadius: "5px" }}
                 placeholder="Nhập mật khẩu"
                 className="w-full p-2"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <button className="absolute right-2 top-0.5" type="button">
                 <span className="sr-only">Toggle password visibility</span>
@@ -74,6 +140,8 @@ export default function Component() {
                 style={{ border: "1px solid black", borderRadius: "5px" }}
                 placeholder="Nhập lại mật khẩu"
                 className="w-full p-2"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <button className="absolute right-2 top-0.5" type="button">
                 <span className="sr-only">Toggle password visibility</span>

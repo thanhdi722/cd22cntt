@@ -182,7 +182,7 @@ export default function MultiProductCatalog() {
           </div>
           <div className="mt-8 text-center">
             <p>
-              &copy; 2023 Cửa hàng trực tuyến. Tất cả các quyền được bảo lưu.
+              &copy; 2024 Cửa hàng trực tuyến. Tất cả các quyền được bảo lưu.
             </p>
           </div>
         </div>

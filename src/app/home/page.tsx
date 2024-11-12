@@ -53,15 +53,17 @@ const categories = ["all", "clothing", "shoes", "accessories", "electronics"];
 export default function MultiProductCatalog() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem("accessToken")
-  );
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!accessToken) {
-      window.location.href = "/login";
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("accessToken");
+      setAccessToken(token);
+      if (!token) {
+        window.location.href = "/login";
+      }
     }
-  }, [accessToken]);
+  }, []);
 
   const filteredProducts = products.filter(
     (product) =>

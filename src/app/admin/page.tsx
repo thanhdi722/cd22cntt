@@ -203,15 +203,14 @@ function Page() {
             Create Product
           </button>
         </div>
-        <div className="overflow-hidden">
-          <table className="min-w-full bg-white border border-gray-300 overflow-x-auto">
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-300">
             <thead>
               <tr>
                 <th className="border px-4 py-2">ID</th>
                 <th className="border px-4 py-2">Tên sản phẩm</th>
                 <th className="border px-4 py-2">Giá</th>
                 <th className="border px-4 py-2">Số lượng </th>
-
                 <th className="border px-4 py-2">Hành động</th>
               </tr>
             </thead>
@@ -224,7 +223,6 @@ function Page() {
                     {product.price.toLocaleString("vi-VN")} ₫
                   </td>
                   <td className="border px-4 py-2">{product.sold}</td>
-
                   <td className="border px-4 py-2">
                     <button
                       className="bg-blue-500 text-white px-2 py-1 rounded mr-2"

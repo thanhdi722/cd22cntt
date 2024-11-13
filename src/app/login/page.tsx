@@ -8,7 +8,6 @@ import "./index.scss";
 import logo from "../../../public/LOGO.png";
 import background from "../../../public/bacground-login-2.jpg";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 
 export default function Component() {
   const [username, setUsername] = useState("");
@@ -44,7 +43,8 @@ export default function Component() {
       localStorage.setItem("role", data.role);
       console.log("Login successful:", data);
       alert("đúng rồi ba");
-      window.location.href = "/home";
+      const role = data.role;
+      window.location.href = role === "admin" ? "/admin" : "/";
     } else {
       alert("sai rồi ba nhập lại đi");
       console.error("Login failed");

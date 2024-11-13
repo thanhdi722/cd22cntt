@@ -9,7 +9,7 @@ interface Product {
   category: string;
   image: string;
 }
-function page() {
+function Page() {
   const [products, setProducts] = useState<Product[]>([]);
   const [notification, setNotification] = useState<string | null>(null);
   const createProductApiUrl =
@@ -292,4 +292,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

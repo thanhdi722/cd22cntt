@@ -8,6 +8,13 @@ import "./index.scss";
 import logo from "../../../public/LOGO.png";
 import background from "../../../public/bacground-login-2.jpg";
 import { useState, useEffect } from "react";
+import axios from "axios";
+
+// Define an interface for the expected response data
+interface LoginResponse {
+  accessToken: string;
+  role: string;
+}
 
 export default function Component() {
   const [username, setUsername] = useState("");
@@ -23,31 +30,25 @@ export default function Component() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    const response = await fetch(
-      "https://manager-rkz3.onrender.com/api/auth/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+    try {
+      const response = await axios.post<LoginResponse>(
+        "https://manager-rkz3.onrender.com/api/auth/login",
+        {
           identifier: username,
           password: password,
-        }),
-      }
-    );
+        }
+      );
 
-    if (response.ok) {
-      const data = await response.json();
+      const data = response.data as LoginResponse; // Cast response data to the defined interface
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("role", data.role);
       console.log("Login successful:", data);
       alert("đúng rồi ba");
       const role = data.role;
       window.location.href = role === "admin" ? "/admin" : "/";
-    } else {
+    } catch (error) {
       alert("sai rồi ba nhập lại đi");
-      console.error("Login failed");
+      console.error("Login failed", error);
     }
     setIsLoading(false);
   };

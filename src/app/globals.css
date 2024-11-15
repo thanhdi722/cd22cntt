@@ -86,3 +86,12 @@
     @apply bg-background text-foreground;
   }
 }
+.star {
+  border-radius: 100%;
+  background-color: white;
+  position: fixed;
+  z-index: 2;
+  animation: moveit;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+}

@@ -14,7 +14,7 @@ import "../../public/assets/css/main-color.css";
 import "../app/admin/apple.scss";
 import ic1 from "../../public/imagefl1.png";
 import ic2 from "../../public/img2.png";
-import logo from "../../public/logo.png";
+import logo from "../../public/LOGO.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Spin } from "antd";

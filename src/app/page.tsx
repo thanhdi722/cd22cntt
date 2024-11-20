@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ShoppingCart, Search } from "lucide-react";
+import { Modal } from "antd";
 
 import "../../public/assets/images/favicon.png";
 import "../../public/assets/css/bootstrap.min.css";
@@ -50,12 +51,18 @@ const fetchProducts = async (
 };
 
 export default function MultiProductCatalog() {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState("Tất cả");
   const [searchTerm, setSearchTerm] = useState("");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [customerName, setCustomerName] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
-  const categories = ["Tất cả", "iPhone", "iPad", "MacBook"]; // Define categories
+  const categories = ["Tất cả", "iPhone", "iPad", "MacBook", "Laptop"]; // Define categories
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -67,7 +74,7 @@ export default function MultiProductCatalog() {
     }
 
     fetchProducts(setProducts);
-  });
+  }, []);
 
   const handleSearch = async (searchTerm: string) => {
     if (searchTerm) {
@@ -97,11 +104,14 @@ export default function MultiProductCatalog() {
     }
   };
 
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category);
+  };
+
   const filteredProducts = products.filter(
     (product: Product) =>
-      (activeCategory === "all" || product.category === activeCategory) &&
-      (searchTerm === "" ||
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      (activeCategory === "Tất cả" || product.name.toLowerCase().includes(activeCategory.toLowerCase())) &&
+      (searchTerm === "" || product.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleLogout = () => {
@@ -132,20 +142,57 @@ export default function MultiProductCatalog() {
     }
   }, []);
 
+  const showModal = (productId: string) => {
+    setSelectedProductId(productId);
+    setIsModalVisible(true);
+  };
+
+  const handleSubmit = async () => {
+    const orderData = {
+      products: [
+        {
+          productId: selectedProductId,
+          quantity: quantity,
+        },
+      ],
+      customerName,
+      customerAddress,
+      customerPhone,
+    };
+
+    try {
+      const response = await fetch("https://manager-rkz3.onrender.com/api/orders/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+      const result = await response.json();
+      console.log("Order created:", result);
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+  };
+
   return (
     <div
       className="flex flex-col min-h-screen"
       style={{ overflow: "hidden", backgroundColor: "black" }}
     >
+      <div className="category-tabs">
+
+      </div>
       <div className="flash-sale-banner">
         <Image src={ic1} alt="" />
       </div>
       <div className="flash-sale-banner2">
         <Image src={ic2} alt="" />
       </div>
-      <div className="rocket">
+      {/* <div className="rocket">
         <Image className="rocket-fly shake" src={imgRocket} alt="" />
-      </div>
+      </div> */}
       <header id="header" className="header-area style-01 layout-01">
         <div className="header-middle">
           <div className="container mx-auto">
@@ -199,12 +246,24 @@ export default function MultiProductCatalog() {
       </header>
 
       <main className="flex-grow mx-auto md:container">
+        <div className="justify-center flex gap-4">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`px-4 py-2 rounded-md tab-button ${activeCategory === category ? 'active' : ''}`}
+              style={{ backgroundColor: activeCategory === category ? 'blue' : 'white', color: activeCategory === category ? 'white' : 'black' }}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
         <h2 className="text-3xl font-bold mb-8 text-center text-white">
           Danh mục sản phẩm
         </h2>
 
         <div>
-          <div className="product-list-sale">
+          <div className="product-list-sale container mx-auto" >
             <div>
               <div className="upgrade-list">
                 <div className="">
@@ -213,18 +272,11 @@ export default function MultiProductCatalog() {
                       className="women-decor"
                       style={{ paddingBottom: "20px" }}
                     >
-                      {/* <Image
-                          src={DecorWomen}
-                          width={1920}
-                          height={1200}
-                          alt="product-banner-01"
-                          className=""
-                        /> */}
                     </div>
                     {filteredProducts && filteredProducts.length > 0 ? (
                       <div className="upgrade">
                         {filteredProducts.map((product: any) => (
-                          <div key={product.id}>
+                          <div key={product.id} onClick={() => showModal(product.id)}>
                             <div className="upgrade-item">
                               <div className="upgrade-item-header">
                                 <span className="percent">Trả góp 0%</span>
@@ -259,9 +311,9 @@ export default function MultiProductCatalog() {
                                       -
                                       {Math.ceil(
                                         100 -
-                                          (product?.price /
-                                            (product?.price + 1000000)) *
-                                            100
+                                        (product?.price /
+                                          (product?.price + 1000000)) *
+                                        100
                                       )}
                                       %
                                     </div>
@@ -292,6 +344,34 @@ export default function MultiProductCatalog() {
           </div>
         </div>
       </main>
+
+      <Modal
+
+        visible={isModalVisible}
+        onOk={handleSubmit}
+        onCancel={() => setIsModalVisible(false)}
+        className="custom-modal"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center">Đặt hàng</h2>
+        <div>
+          <label>
+            Họ và tên:
+            <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="modal-input" />
+          </label>
+          <label>
+            Địa chỉ:
+            <input type="text" value={customerAddress} onChange={(e) => setCustomerAddress(e.target.value)} className="modal-input" />
+          </label>
+          <label>
+            Số điện thoại:
+            <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className="modal-input" />
+          </label>
+          <label>
+            Số lượng:
+            <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} min={1} className="modal-input" />
+          </label>
+        </div>
+      </Modal>
 
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4">

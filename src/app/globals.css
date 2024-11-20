@@ -95,3 +95,18 @@
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
 }
+
+/* Add this to your CSS file */
+.custom-modal {
+  background-color: #f9f9f9; /* Light background for the modal */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.modal-input {
+  width: 100%; /* Full width for inputs */
+  padding: 10px; /* Padding for better spacing */
+  margin-bottom: 10px; /* Space between inputs */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Rounded corners for inputs */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}

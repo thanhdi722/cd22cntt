@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, InputNumber } from "antd";
+import { Modal, Form, Input, InputNumber, Menu } from "antd";
+import Link from "next/link";
+
 interface Product {
   _id: string;
   name: string;
@@ -151,18 +153,31 @@ function Page() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Menu mode="horizontal" className="mb-4">
+        <Menu.Item key="home">
+          <Link href="/">Trang Chủ</Link>
+        </Menu.Item>
+        <Menu.Item key="products">
+          <Link href="/admin">Quản Lý Sản Phẩm</Link>
+        </Menu.Item>
+        <Menu.Item key="orders">
+          <Link href="/admin-orders">Quản Lý Đơn Hàng</Link>
+        </Menu.Item>
+        <Menu.Item key="inventory">
+          <Link href="/admin-products">Quản Lý Kho</Link>
+        </Menu.Item>
+      </Menu>
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold mb-8 text-center">Product List</h2>
         {notification && (
           <div className="bg-green-500 text-white p-2 rounded mb-4 text-right">
             {notification}
           </div>
         )}
         <div className="mb-8">
-          <h3 className="text-2xl font-bold mb-4">Create New Product</h3>
+          <h3 className="text-2xl font-bold mb-4">Tạo sản phẩm</h3>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Tên sản phẩm"
             value={newProduct.name}
             onChange={(e) =>
               setNewProduct({ ...newProduct, name: e.target.value })
@@ -172,8 +187,8 @@ function Page() {
           />
           <input
             type="number"
-            placeholder="Price"
-            value={newProduct.price}
+            placeholder="Giá"
+            value={newProduct.price === 0 ? "" : newProduct.price}
             onChange={(e) =>
               setNewProduct({ ...newProduct, price: Number(e.target.value) })
             }
@@ -182,8 +197,8 @@ function Page() {
           />
           <input
             type="number"
-            placeholder="Sold"
-            value={newProduct.sold}
+            placeholder="Số lượng"
+            value={newProduct.sold === 0 ? "" : newProduct.sold}
             onChange={(e) =>
               setNewProduct({ ...newProduct, sold: Number(e.target.value) })
             }
@@ -200,7 +215,7 @@ function Page() {
             className="bg-green-500 text-white px-4 py-2 rounded"
             onClick={handleCreateProduct}
           >
-            Create Product
+            Tạo sản phẩm
           </button>
         </div>
         <div className="overflow-x-auto">
@@ -228,13 +243,13 @@ function Page() {
                       className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
                       onClick={() => handleOpenEditPopup(product._id)}
                     >
-                      Edit
+                      Sửa sản phẩm
                     </button>
                     <button
                       className="bg-red-500 text-white px-2 py-1 rounded"
                       onClick={() => handleDelete(product._id)}
                     >
-                      Delete
+                      Xóa sản phẩm
                     </button>
                   </td>
                 </tr>

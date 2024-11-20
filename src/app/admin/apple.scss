@@ -9,19 +9,23 @@
       gap: 0.4rem;
     }
   }
+
   .sub-tab-list {
     display: flex;
     flex-wrap: wrap;
     font-size: 1.4rem;
   }
+
   .upgrade-list {
     .women-decor {
       position: relative;
+
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
+
       .women-text {
         position: absolute;
         top: 50%;
@@ -30,14 +34,17 @@
         font-size: 3.2rem;
         font-weight: bold;
         color: #fff;
+
         @media screen and (max-width: 1024px) {
           font-size: 3.2rem;
         }
+
         @media screen and (max-width: 768px) {
           font-size: 1.4rem;
         }
       }
     }
+
     .tabs {
       padding: 1.2rem 0;
       font-size: 1.2rem;
@@ -58,16 +65,20 @@
         }
       }
     }
+
     .upgrade {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 1.2rem;
+
       @media screen and (max-width: "1200px") {
         grid-template-columns: repeat(4, 1fr);
       }
+
       @media screen and (max-width: "850px") {
         grid-template-columns: repeat(3, 1fr);
       }
+
       @media screen and (max-width: "768px") {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -92,7 +103,8 @@
         gap: 1.2rem;
 
         /* Đảm bảo các item có chiều cao bằng nhau */
-        min-height: 100%; /* Đặt chiều cao tối thiểu */
+        min-height: 100%;
+        /* Đặt chiều cao tối thiểu */
         height: 100%;
 
         &-header {
@@ -112,10 +124,12 @@
               width: 2.2rem !important;
               height: 3.6rem !important;
             }
+
             @media screen and (max-width: 768px) {
               width: 1.6rem !important;
               height: 2.2rem !important;
             }
+
             img {
               width: 100%;
               height: 100%;
@@ -219,6 +233,7 @@
         }
       }
     }
+
     .percent {
       font-size: 1.2rem;
       border: 1px solid #ef373e;
@@ -247,30 +262,37 @@
     padding: 20rem;
   }
 }
+
 @keyframes fall {
   0% {
     opacity: 1;
     top: -10%;
     transform: translateX (20px) rotate(0deg);
   }
+
   20% {
     opacity: 0.8;
     transform: translateX (-20px) rotate(45deg);
   }
+
   40% {
     transform: translateX (-20px) rotate(90deg);
   }
+
   60% {
     transform: translateX (-20px) rotate(135deg);
   }
+
   80% {
     transform: translateX (-20px) rotate(180deg);
   }
+
   100% {
     top: 110%;
     transform: translateX (-20px) rotate(225deg);
   }
 }
+
 .leaf3 {
   transform: rotateX(180deg);
 }
@@ -284,33 +306,41 @@
     bottom: 100%;
   }
 }
+
 @keyframes shake {
   0% {
     transform: translate(0);
   }
+
   25% {
     transform: translate(-2px, 0);
   }
+
   50% {
     transform: translate(2px, 0);
   }
+
   75% {
     transform: translate(-2px, 0);
   }
+
   100% {
     transform: translate(0);
   }
 }
+
 .rocket {
   position: fixed;
   bottom: -20%;
   right: 0;
   z-index: 99;
   animation: fly-up 10s infinite;
+
   @media screen and (max-width: 850px) {
     display: none;
   }
 }
+
 .rocket-fly {
   z-index: 99;
   width: 200px;
@@ -323,15 +353,19 @@
   0% {
     transform: translate(0);
   }
+
   25% {
     transform: translate(-2px, 2px);
   }
+
   50% {
     transform: translate(2px, -2px);
   }
+
   75% {
     transform: translate(-2px, -2px);
   }
+
   100% {
     transform: translate(0);
   }
@@ -342,6 +376,7 @@
   animation: shake 0.5s infinite;
   z-index: 99;
 }
+
 .flash-sale-banner {
   position: fixed;
   right: 0;
@@ -351,14 +386,17 @@
   z-index: 999;
   height: max-content;
   width: fit-content;
+
   img {
     width: 150px;
     height: 150px;
   }
+
   @media screen and (max-width: 850px) {
     display: none;
   }
 }
+
 .flash-sale-banner2 {
   position: fixed;
   right: 0;
@@ -368,30 +406,38 @@
   z-index: 999;
   height: max-content;
   width: fit-content;
+
   @media screen and (max-width: 850px) {
     display: none;
   }
+
   img {
     width: 150px;
     height: 150px;
   }
 }
+
 @keyframes wavyghost {
   0% {
     transform: translate(0vw, 0vh) scale(1.5, 1.5);
   }
+
   20% {
     transform: translate(-20vw, 20vh) rotate(10deg);
   }
+
   40% {
     transform: translate(-40vw, 0vh) scale(1.5, 1.5);
   }
+
   60% {
     transform: translate(-60vw, -20vh) rotate(-10deg);
   }
+
   80% {
     transform: translate(-80vw, 0vh) scale(1.5, 1.5);
   }
+
   100% {
     transform: translate(-100vw, 20vh) rotate(10deg);
   }
@@ -400,6 +446,7 @@
 .input-search {
   width: 500px;
   border-radius: 20px !important;
+
   @media screen and (max-width: 768px) {
     width: 200px;
   }

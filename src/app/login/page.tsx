@@ -14,6 +14,7 @@ import axios from "axios";
 interface LoginResponse {
   accessToken: string;
   role: string;
+  _id: string;
 }
 
 export default function Component() {
@@ -42,6 +43,7 @@ export default function Component() {
       const data = response.data as LoginResponse; // Cast response data to the defined interface
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("role", data.role);
+      localStorage.setItem("id_user", data._id);
       console.log("Login successful:", data);
       alert("đúng rồi ba");
       const role = data.role;

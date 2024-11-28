@@ -56,7 +56,9 @@ export default function MultiProductCatalog() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(
+    null
+  );
   const [customerName, setCustomerName] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -65,16 +67,25 @@ export default function MultiProductCatalog() {
   const categories = ["Tất cả", "iPhone", "iPad", "MacBook", "Laptop"]; // Define categories
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("accessToken");
-      setAccessToken(token);
-      if (!token) {
-        window.location.href = "/login";
+    const checkToken = () => {
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("accessToken");
+        setAccessToken(token);
+        if (!token) {
+          window.location.href = "/login";
+        }
       }
-    }
+    };
 
-    fetchProducts(setProducts);
+    checkToken(); // Initial check
+    const intervalId = setInterval(checkToken, 5000); // Check every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
+
+  useEffect(() => {
+    fetchProducts(setProducts);
+  }, [1000]);
 
   const handleSearch = async (searchTerm: string) => {
     if (searchTerm) {
@@ -110,8 +121,10 @@ export default function MultiProductCatalog() {
 
   const filteredProducts = products.filter(
     (product: Product) =>
-      (activeCategory === "Tất cả" || product.name.toLowerCase().includes(activeCategory.toLowerCase())) &&
-      (searchTerm === "" || product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      (activeCategory === "Tất cả" ||
+        product.name.toLowerCase().includes(activeCategory.toLowerCase())) &&
+      (searchTerm === "" ||
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleLogout = () => {
@@ -161,13 +174,16 @@ export default function MultiProductCatalog() {
     };
 
     try {
-      const response = await fetch("https://manager-rkz3.onrender.com/api/orders/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
+      const response = await fetch(
+        "https://manager-rkz3.onrender.com/api/orders/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
       const result = await response.json();
       console.log("Order created:", result);
       setIsModalVisible(false);
@@ -181,9 +197,7 @@ export default function MultiProductCatalog() {
       className="flex flex-col min-h-screen"
       style={{ overflow: "hidden", backgroundColor: "black" }}
     >
-      <div className="category-tabs">
-
-      </div>
+      <div className="category-tabs"></div>
       <div className="flash-sale-banner">
         <Image src={ic1} alt="" />
       </div>
@@ -251,8 +265,13 @@ export default function MultiProductCatalog() {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 rounded-md tab-button ${activeCategory === category ? 'active' : ''}`}
-              style={{ backgroundColor: activeCategory === category ? 'blue' : 'white', color: activeCategory === category ? 'white' : 'black' }}
+              className={`px-4 py-2 rounded-md tab-button ${
+                activeCategory === category ? "active" : ""
+              }`}
+              style={{
+                backgroundColor: activeCategory === category ? "blue" : "white",
+                color: activeCategory === category ? "white" : "black",
+              }}
             >
               {category}
             </button>
@@ -263,7 +282,7 @@ export default function MultiProductCatalog() {
         </h2>
 
         <div>
-          <div className="product-list-sale container mx-auto" >
+          <div className="product-list-sale container mx-auto">
             <div>
               <div className="upgrade-list">
                 <div className="">
@@ -271,12 +290,14 @@ export default function MultiProductCatalog() {
                     <div
                       className="women-decor"
                       style={{ paddingBottom: "20px" }}
-                    >
-                    </div>
+                    ></div>
                     {filteredProducts && filteredProducts.length > 0 ? (
                       <div className="upgrade">
                         {filteredProducts.map((product: any) => (
-                          <div key={product.id} onClick={() => showModal(product.id)}>
+                          <div
+                            key={product.id}
+                            onClick={() => showModal(product.id)}
+                          >
                             <div className="upgrade-item">
                               <div className="upgrade-item-header">
                                 <span className="percent">Trả góp 0%</span>
@@ -311,9 +332,9 @@ export default function MultiProductCatalog() {
                                       -
                                       {Math.ceil(
                                         100 -
-                                        (product?.price /
-                                          (product?.price + 1000000)) *
-                                        100
+                                          (product?.price /
+                                            (product?.price + 1000000)) *
+                                            100
                                       )}
                                       %
                                     </div>
@@ -346,7 +367,6 @@ export default function MultiProductCatalog() {
       </main>
 
       <Modal
-
         visible={isModalVisible}
         onOk={handleSubmit}
         onCancel={() => setIsModalVisible(false)}
@@ -356,19 +376,40 @@ export default function MultiProductCatalog() {
         <div>
           <label>
             Họ và tên:
-            <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="modal-input" />
+            <input
+              type="text"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              className="modal-input"
+            />
           </label>
           <label>
             Địa chỉ:
-            <input type="text" value={customerAddress} onChange={(e) => setCustomerAddress(e.target.value)} className="modal-input" />
+            <input
+              type="text"
+              value={customerAddress}
+              onChange={(e) => setCustomerAddress(e.target.value)}
+              className="modal-input"
+            />
           </label>
           <label>
             Số điện thoại:
-            <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className="modal-input" />
+            <input
+              type="text"
+              value={customerPhone}
+              onChange={(e) => setCustomerPhone(e.target.value)}
+              className="modal-input"
+            />
           </label>
           <label>
             Số lượng:
-            <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} min={1} className="modal-input" />
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              min={1}
+              className="modal-input"
+            />
           </label>
         </div>
       </Modal>

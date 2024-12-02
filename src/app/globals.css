@@ -110,3 +110,8 @@
   border-radius: 4px; /* Rounded corners for inputs */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
+@media (max-width: 768px) {
+  .logoheader {
+    display: none;
+  }
+}

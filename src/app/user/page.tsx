@@ -89,6 +89,14 @@ export default function AccountPage() {
 
   const handleMenuClick = (e: any) => {
     setCurrentTab(e.key);
+    if (e.key === "logout") {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      const role = localStorage.getItem("role");
+      if (!role) {
+        window.location.href = "/login";
+      }
+    }
   };
 
   const columns = [

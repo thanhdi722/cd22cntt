@@ -159,7 +159,7 @@ export default function MultiProductCatalog() {
     setSelectedProductId(productId);
     setIsModalVisible(true);
   };
-
+  const idUser = localStorage.getItem("id_user");
   const handleSubmit = async () => {
     const orderData = {
       products: [
@@ -171,6 +171,7 @@ export default function MultiProductCatalog() {
       customerName,
       customerAddress,
       customerPhone,
+      idUser: `${idUser}`,
     };
 
     try {
@@ -253,6 +254,14 @@ export default function MultiProductCatalog() {
                     Đăng Xuất
                   </button>
                 </div>
+                <Link href="/user" className="float-right ml-2">
+                  <button
+                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 border-radius-10 break-words"
+                    style={{ borderRadius: "10px", width: "100px" }}
+                  >
+                    Thông tin
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

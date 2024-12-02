@@ -45,7 +45,7 @@ export default function Component() {
       localStorage.setItem("role", data.role);
       localStorage.setItem("id_user", data._id);
       console.log("Login successful:", data);
-      alert("đúng rồi ba");
+
       const role = data.role;
       window.location.href = role === "admin" ? "/admin" : "/";
     } catch (error) {

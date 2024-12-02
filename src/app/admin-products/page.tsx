@@ -217,7 +217,7 @@ function Page() {
       .toLowerCase()
       .includes(searchName.toLowerCase());
     const matchesDate = searchDate
-      ? new Date(product.createdAt).toLocaleDateString() ===
+      ? new Date(product.updateAt).toLocaleDateString() ===
         new Date(searchDate).toLocaleDateString()
       : true;
     return matchesName && matchesDate;

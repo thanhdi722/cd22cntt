@@ -1,20 +1,87 @@
 "use client";
 
-import { Layout, Menu, Form, Input, Button, Typography } from "antd";
+import { Layout, Menu, Form, Input, Button, Typography, Table } from "antd";
 import {
   UserOutlined,
   ShoppingCartOutlined,
   HomeOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { data } from "framer-motion/client";
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
 
 export default function AccountPage() {
   const [form] = Form.useForm();
-  const [currentTab, setCurrentTab] = useState("home");
+  const [currentTab, setCurrentTab] = useState("account");
+  const [userData, setUserData] = useState<any>(null);
+  const [orders, setOrders] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        try {
+          const response = await fetch(
+            "https://manager-rkz3.onrender.com/api/auth/me",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          const data = await response.json();
+
+          setUserData(data);
+          form.setFieldsValue({
+            _id: data._id,
+            firstName: data.username,
+            email: data.email,
+            displayName: data.username,
+            phone_number: data.phone_number,
+          });
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [form]);
+
+  const fetchOrders = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      try {
+        const response = await fetch(
+          "https://manager-rkz3.onrender.com/api/orders",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const data = await response.json();
+        const filteredOrders = data.filter(
+          (order: any) => order.idUser === userData?._id
+        );
+        setOrders(filteredOrders);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (currentTab === "orders") {
+      fetchOrders();
+    }
+  }, [currentTab]);
 
   const onFinish = (values: any) => {
     console.log("Form values:", values);
@@ -24,6 +91,31 @@ export default function AccountPage() {
     setCurrentTab(e.key);
   };
 
+  const columns = [
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "productName",
+      key: "productName",
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Giá tổng",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      render: (text: any) => <span>{text.toLocaleString()} VND</span>,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+    },
+  ];
+
+  console.log("User data:", userData);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider theme="light" style={{ borderRight: "1px solid #f0f0f0" }}>
@@ -34,7 +126,7 @@ export default function AccountPage() {
           onClick={handleMenuClick}
         >
           <Menu.Item key="home" icon={<HomeOutlined />}>
-            TRANG CHỦ
+            <Link href="/">TRANG CHỦ</Link>
           </Menu.Item>
           <Menu.Item key="account" icon={<UserOutlined />}>
             TRANG TÀI KHOẢN
@@ -60,50 +152,40 @@ export default function AccountPage() {
             <div>Đây là nội dung cho tab Trang Chủ</div>
           )}
           {currentTab === "account" && (
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinish}
-              initialValues={{
-                displayName: "thanhdi721",
-                email: "thanhdi721@gmail.com",
-              }}
-            >
+            <Form form={form} layout="vertical" onFinish={onFinish}>
               <div
                 style={{ display: "flex", gap: "24px", marginBottom: "24px" }}
               >
                 <Form.Item
-                  name="firstName"
-                  label="Tên *"
+                  name="_id"
+                  label="ID*"
                   style={{ flex: 1 }}
-                  rules={[{ required: true, message: "Vui lòng nhập tên" }]}
+                  rules={[{ required: true, message: "Vui lòng nhập ID" }]}
                 >
-                  <Input />
+                  <Input value={userData?._id} disabled />
                 </Form.Item>
 
                 <Form.Item
-                  name="lastName"
-                  label="Họ *"
+                  name="firstName"
+                  label="Họ và tên *"
                   style={{ flex: 1 }}
-                  rules={[{ required: true, message: "Vui lòng nhập họ" }]}
+                  rules={[
+                    { required: true, message: "Vui lòng nhập họ và tên" },
+                  ]}
                 >
-                  <Input />
+                  <Input disabled />
                 </Form.Item>
               </div>
 
               <Form.Item
-                name="displayName"
-                label="Tên hiển thị *"
+                name="phone_number"
+                label="Số điện thoại *"
                 rules={[
-                  { required: true, message: "Vui lòng nhập tên hiển thị" },
+                  { required: true, message: "Vui lòng nhập số điện thoại" },
                 ]}
               >
-                <Input />
+                <Input disabled />
               </Form.Item>
-              <div style={{ color: "#666", marginTop: -20, marginBottom: 24 }}>
-                Tên này sẽ hiển thị trong trang Tài khoản và phần Đánh giá sản
-                phẩm
-              </div>
 
               <Form.Item
                 name="email"
@@ -113,22 +195,27 @@ export default function AccountPage() {
                   { type: "email", message: "Email không hợp lệ" },
                 ]}
               >
-                <Input />
-              </Form.Item>
-
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ background: "#00853C" }}
-                >
-                  LƯU THAY ĐỔI
-                </Button>
+                <Input disabled />
               </Form.Item>
             </Form>
           )}
           {currentTab === "orders" && (
-            <div>Đây là nội dung cho tab Đơn Hàng</div>
+            <Table
+              dataSource={orders.map((order) => ({
+                key: order._id,
+                productName: order.products
+                  .map((p: any) => p.productName)
+                  .join(", "),
+                quantity: order.products.reduce(
+                  (total: number, p: any) => total + p.quantity,
+                  0
+                ),
+                totalPrice: order.totalPrice,
+                status: order.status,
+              }))}
+              columns={columns}
+              pagination={false}
+            />
           )}
           {currentTab === "logout" && <div>Bạn đã đăng xuất</div>}
         </Content>

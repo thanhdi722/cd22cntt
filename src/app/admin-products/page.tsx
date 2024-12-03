@@ -113,7 +113,7 @@ function Page() {
       setNewProduct({ name: "", price: 0, sold: 0, image: [] }); // Reset form
     } else {
       console.error("Failed to create product");
-      setNotification("Tạo sản phẩm thất bại.");
+      setNotification("Tạo s���n phẩm thất bại.");
     }
   };
 
@@ -129,6 +129,7 @@ function Page() {
     formData.append("name", newProduct.name);
     formData.append("price", newProduct.price.toString());
     formData.append("sold", newProduct.sold.toString());
+
     newProduct.image.forEach((file) => {
       formData.append("image", file); // Append each image file
     });

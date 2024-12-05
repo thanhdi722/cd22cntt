@@ -12,7 +12,6 @@ import Link from "next/link";
 import { data } from "framer-motion/client";
 
 const { Header, Sider, Content } = Layout;
-const { Title } = Typography;
 
 export default function AccountPage() {
   const [form] = Form.useForm();

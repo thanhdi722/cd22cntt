@@ -144,7 +144,6 @@ export default function MultiProductCatalog() {
       star.style.width = size + "px";
       star.style.height = size + "px";
       star.style.opacity = Math.random().toString();
-      //   -----------------------------------------------------------------------
 
       star.style.animation = "moveit 2.5s infinite";
 

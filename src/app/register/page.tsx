@@ -42,10 +42,9 @@ export default function Component() {
     );
 
     if (response.ok) {
-      alert("OK xong rồi!");
       router.push("/login");
     } else {
-      alert("sai rồi ba nhập lại đi!");
+      alert("sai rồi nhập lại đi!");
     }
   };
 

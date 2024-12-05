@@ -157,7 +157,7 @@ function Page() {
   };
 
   const handleOpenEditPopup = (id: string) => {
-    handleEdit(id); // Call the existing handleEdit function
+    handleEdit(id);
     setIsModalVisible(true);
   };
 

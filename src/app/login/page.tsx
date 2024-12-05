@@ -40,7 +40,7 @@ export default function Component() {
         }
       );
 
-      const data = response.data as LoginResponse; // Cast response data to the defined interface
+      const data = response.data as LoginResponse;
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("role", data.role);
       localStorage.setItem("id_user", data._id);
@@ -49,7 +49,7 @@ export default function Component() {
       const role = data.role;
       window.location.href = role === "admin" ? "/admin" : "/";
     } catch (error) {
-      alert("sai rồi ba nhập lại đi");
+      alert("sai rồi nhập lại đi");
       console.error("Login failed", error);
     }
     setIsLoading(false);

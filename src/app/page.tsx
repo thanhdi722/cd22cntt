@@ -314,7 +314,7 @@ export default function MultiProductCatalog() {
                               <div className="upgrade-item-img">
                                 <div className="img-content">
                                   <Image
-                                    src={product?.image}
+                                    src={product?.image.src}
                                     width={1400}
                                     height={1200}
                                     alt={`product-${product.id}`}

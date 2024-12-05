@@ -113,7 +113,7 @@ function Page() {
       setNewProduct({ name: "", price: 0, sold: 0, image: [] }); // Reset form
     } else {
       console.error("Failed to create product");
-      setNotification("Tạo sản phẩm thất bại.");
+      setNotification("Tạo s���n phẩm thất bại.");
     }
   };
 
@@ -129,6 +129,7 @@ function Page() {
     formData.append("name", newProduct.name);
     formData.append("price", newProduct.price.toString());
     formData.append("sold", newProduct.sold.toString());
+
     newProduct.image.forEach((file) => {
       formData.append("image", file); // Append each image file
     });
@@ -165,11 +166,18 @@ function Page() {
     await handleUpdateProduct(newProduct._id!);
     setIsModalVisible(false);
   };
-
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      window.location.href = "/login"; // Redirect to login page
+    }
+  }, []);
   const handleModalCancel = () => {
     setIsModalVisible(false);
   };
-
+  const idUser = localStorage.getItem("id_user");
   const handleCreateOrder = async () => {
     const orderApiUrl = "https://manager-rkz3.onrender.com/api/orders/create";
     const response = await fetch(orderApiUrl, {
@@ -187,6 +195,7 @@ function Page() {
         customerName: orderDetails.customerName,
         customerAddress: orderDetails.customerAddress,
         customerPhone: orderDetails.customerPhone,
+        idUser: idUser,
       }),
     });
 
@@ -218,7 +227,7 @@ function Page() {
       .includes(searchName.toLowerCase());
     const matchesDate = searchDate
       ? new Date(product.updateAt).toLocaleDateString() ===
-        new Date(searchDate).toLocaleDateString()
+      new Date(searchDate).toLocaleDateString()
       : true;
     return matchesName && matchesDate;
   });

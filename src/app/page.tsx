@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ShoppingCart, Search } from "lucide-react";
-import { Modal } from "antd";
+import { Modal, notification } from "antd";
 
 import "../../public/assets/images/favicon.png";
 import "../../public/assets/css/bootstrap.min.css";
@@ -187,6 +187,12 @@ export default function MultiProductCatalog() {
       const result = await response.json();
       console.log("Order created:", result);
       setIsModalVisible(false);
+
+      // Show success notification
+      notification.success({
+        message: "Đặt hàng thành công",
+        description: "Đơn hàng của bạn đã được tạo thành công.",
+      });
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -207,75 +213,63 @@ export default function MultiProductCatalog() {
       {/* <div className="rocket">
         <Image className="rocket-fly shake" src={imgRocket} alt="" />
       </div> */}
-      <header id="header" className="header-area style-01 layout-01">
-        <div className="header-middle">
-          <div className="container mx-auto">
-            <div className="row flex flex-wrap items-center">
-              <div className="col-lg-3 col-md-4 col-6 hidden-sm hidden-xs">
-                <a href="/" className="biolife-logo">
-                  <img
-                    src={logo.src}
-                    alt="biolife logo"
-                    width="135"
-                    height="36"
-                  />
-                </a>
-              </div>
-              <div className="col-lg-8 col-md-6 col-6">
-                <div className="header-search-bar layout-01 no-product-cat">
-                  <form
-                    action="#"
-                    className="form-search"
-                    name="desktop-seacrh"
-                    method="get"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Tìm kiếm"
-                      className="input-search"
-                      value={searchTerm}
-                      onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        handleSearch(e.target.value);
-                      }}
-                    />
-                    <button type="submit" className="btn-submit">
-                      <i className="biolife-icon icon-search"></i>
-                    </button>
-                  </form>
-                </div>
-                <div className="float-right ml-2">
-                  <button
-                    onClick={handleLogout}
-                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 border-radius-10 break-words"
-                    style={{ borderRadius: "10px", width: "100px" }}
-                  >
-                    Đăng Xuất
-                  </button>
-                </div>
-                <Link href="/user" className="float-right ml-2">
-                  <button
-                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 border-radius-10 break-words"
-                    style={{ borderRadius: "10px", width: "100px" }}
-                  >
-                    Thông tin
-                  </button>
-                </Link>
-              </div>
+      <header id="header" className="py-4 text-white shadow-md">
+        <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
+          <div className="w-1/4 md:w-auto">
+            <a href="/" className="biolife-logo">
+              <img
+                src={logo.src}
+                alt="biolife logo"
+                className="w-32 h-auto logoheader"
+              />
+            </a>
+          </div>
+          <div className="w-full md:w-auto flex-grow md:flex-grow-0 mt-4 md:mt-0">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Tìm kiếm"
+                className="w-full md:w-100 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                style={{ borderRadius: "5px !important" }}
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  handleSearch(e.target.value);
+                }}
+              />
+              <button type="submit" className="absolute right-0 top-0 mt-2 mr-2 p-2">
+                <i className="biolife-icon icon-search text-gray-500"></i>
+              </button>
             </div>
+          </div>
+          <div className="flex space-x-2 mt-4 md:mt-0" >
+            <button
+              onClick={handleLogout}
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Đăng Xuất
+            </button>
+            <Link href="/user">
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+              >
+                Thông tin
+              </button>
+            </Link>
           </div>
         </div>
       </header>
-
+      <h1 className="text-4xl font-bold mb-8 text-center text-white">
+        Danh mục sản phẩm
+      </h1>
       <main className="flex-grow mx-auto md:container">
         <div className="justify-center flex gap-4">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 rounded-md tab-button ${
-                activeCategory === category ? "active" : ""
-              }`}
+              className={`px-4 py-2 rounded-md tab-button ${activeCategory === category ? "active" : ""
+                }`}
               style={{
                 backgroundColor: activeCategory === category ? "blue" : "white",
                 color: activeCategory === category ? "white" : "black",
@@ -285,9 +279,7 @@ export default function MultiProductCatalog() {
             </button>
           ))}
         </div>
-        <h2 className="text-3xl font-bold mb-8 text-center text-white">
-          Danh mục sản phẩm
-        </h2>
+
 
         <div>
           <div className="product-list-sale container mx-auto">
@@ -340,9 +332,9 @@ export default function MultiProductCatalog() {
                                       -
                                       {Math.ceil(
                                         100 -
-                                          (product?.price /
-                                            (product?.price + 1000000)) *
-                                            100
+                                        (product?.price /
+                                          (product?.price + 1000000)) *
+                                        100
                                       )}
                                       %
                                     </div>

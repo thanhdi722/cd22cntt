@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, InputNumber, Menu } from "antd";
@@ -34,9 +35,25 @@ function Page() {
       const data = await response.json();
       setOrders(data);
     };
+<<<<<<< HEAD
 
     fetchOrders();
   }, []);
+=======
+    useEffect(() => {
+        const role = localStorage.getItem("role");
+        if (role !== "admin") {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("role");
+            window.location.href = "/login"; // Redirect to login page
+        }
+    }, []);
+    const handleDelete = async (id: string) => {
+        const productsDeleteApiUrl = `https://manager-rkz3.onrender.com/api/orders/${id}`;
+        const response = await fetch(productsDeleteApiUrl, {
+            method: "DELETE",
+        });
+>>>>>>> 0b4961e2e1d9687b2e738cc87d3bed24517fae0f
 
   const handleEdit = async (id: string) => {
     const productApiUrl = `https://manager-rkz3.onrender.com/api/products/${id}`;

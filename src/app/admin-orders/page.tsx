@@ -39,11 +39,13 @@ function Page() {
   }, []);
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (role !== "admin") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("role");
-      window.location.href = "/login"; // Redirect to login page
+    if (typeof window !== "undefined") {
+      const role = localStorage.getItem("role");
+      if (role !== "admin") {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("role");
+        window.location.href = "/login"; // Redirect to login page
+      }
     }
   }, []);
   const handleDelete = async (id: string) => {
@@ -203,7 +205,7 @@ function Page() {
       .includes(searchName.toLowerCase());
     const matchesDate = searchDate
       ? new Date(order.createdAt).toLocaleDateString() ===
-        new Date(searchDate).toLocaleDateString()
+      new Date(searchDate).toLocaleDateString()
       : true;
     return matchesName && matchesDate;
   });

@@ -21,30 +21,32 @@ export default function AccountPage() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        try {
-          const response = await fetch(
-            "https://manager-rkz3.onrender.com/api/auth/me",
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
-          );
-          const data = await response.json();
+      if (typeof window !== "undefined") {
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+          try {
+            const response = await fetch(
+              "https://manager-rkz3.onrender.com/api/auth/me",
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            );
+            const data = await response.json();
 
-          setUserData(data);
-          form.setFieldsValue({
-            _id: data._id,
-            firstName: data.username,
-            email: data.email,
-            displayName: data.username,
-            phone_number: data.phone_number,
-          });
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+            setUserData(data);
+            form.setFieldsValue({
+              _id: data._id,
+              firstName: data.username,
+              email: data.email,
+              displayName: data.username,
+              phone_number: data.phone_number,
+            });
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
         }
       }
     };
@@ -53,25 +55,27 @@ export default function AccountPage() {
   }, [form]);
 
   const fetchOrders = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
-      try {
-        const response = await fetch(
-          "https://manager-rkz3.onrender.com/api/orders",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const data = await response.json();
-        const filteredOrders = data.filter(
-          (order: any) => order.idUser === userData?._id
-        );
-        setOrders(filteredOrders);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
+    if (typeof window !== "undefined") {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        try {
+          const response = await fetch(
+            "https://manager-rkz3.onrender.com/api/orders",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          const data = await response.json();
+          const filteredOrders = data.filter(
+            (order: any) => order.idUser === userData?._id
+          );
+          setOrders(filteredOrders);
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
       }
     }
   };
@@ -88,11 +92,10 @@ export default function AccountPage() {
 
   const handleMenuClick = (e: any) => {
     setCurrentTab(e.key);
-    if (e.key === "logout") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("role");
-      const role = localStorage.getItem("role");
-      if (!role) {
+    if (typeof window !== "undefined") {
+      if (e.key === "logout") {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("role");
         window.location.href = "/login";
       }
     }

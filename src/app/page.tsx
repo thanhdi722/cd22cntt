@@ -85,7 +85,7 @@ export default function MultiProductCatalog() {
 
   useEffect(() => {
     fetchProducts(setProducts);
-  }, [1000]);
+  }, []);
 
   const handleSearch = async (searchTerm: string) => {
     if (searchTerm) {
@@ -128,9 +128,11 @@ export default function MultiProductCatalog() {
   );
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("role");
-    setAccessToken(null);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      setAccessToken(null);
+    }
   };
   useEffect(() => {
     for (let i = 0; i < 400; i++) {
@@ -158,7 +160,14 @@ export default function MultiProductCatalog() {
     setSelectedProductId(productId);
     setIsModalVisible(true);
   };
-  const idUser = localStorage.getItem("id_user");
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    // Check if window is defined to ensure this code runs only on the client
+    if (typeof window !== 'undefined') {
+      const storedUserId = localStorage.getItem('id_user');
+      setUserId(storedUserId || null);
+    }
+  }, []);
   const handleSubmit = async () => {
     const orderData = {
       products: [
@@ -170,7 +179,7 @@ export default function MultiProductCatalog() {
       customerName,
       customerAddress,
       customerPhone,
-      idUser: `${idUser}`,
+      idUser: userId || "",
     };
 
     try {
@@ -217,7 +226,7 @@ export default function MultiProductCatalog() {
         <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
           <div className="w-1/4 md:w-auto">
             <a href="/" className="biolife-logo">
-              <img
+              <Image
                 src={logo.src}
                 alt="biolife logo"
                 className="w-32 h-auto logoheader"
@@ -304,7 +313,7 @@ export default function MultiProductCatalog() {
                               </div>
                               <div className="upgrade-item-img">
                                 <div className="img-content">
-                                  <img
+                                  <Image
                                     src={product?.image}
                                     width={1400}
                                     height={1200}

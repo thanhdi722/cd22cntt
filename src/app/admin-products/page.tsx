@@ -167,17 +167,26 @@ function Page() {
     setIsModalVisible(false);
   };
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (role !== "admin") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("role");
-      window.location.href = "/login"; // Redirect to login page
+    if (typeof window !== "undefined") {
+      const role = localStorage.getItem("role");
+      if (role !== "admin") {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("role");
+        window.location.href = "/login"; // Redirect to login page
+      }
     }
   }, []);
   const handleModalCancel = () => {
     setIsModalVisible(false);
   };
-  const idUser = localStorage.getItem("id_user");
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    // Check if window is defined to ensure this code runs only on the client
+    if (typeof window !== 'undefined') {
+      const storedUserId = localStorage.getItem('id_user');
+      setUserId(storedUserId || null);
+    }
+  }, []);
   const handleCreateOrder = async () => {
     const orderApiUrl = "https://manager-rkz3.onrender.com/api/orders/create";
     const response = await fetch(orderApiUrl, {
@@ -195,7 +204,7 @@ function Page() {
         customerName: orderDetails.customerName,
         customerAddress: orderDetails.customerAddress,
         customerPhone: orderDetails.customerPhone,
-        idUser: idUser,
+        idUser: userId || "",
       }),
     });
 

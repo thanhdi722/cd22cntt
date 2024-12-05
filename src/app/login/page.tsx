@@ -49,6 +49,8 @@ export default function Component() {
       const role = data.role;
       window.location.href = role === "admin" ? "/admin" : "/";
     } catch (error) {
+
+
       alert("sai rồi nhập lại đi");
       console.error("Login failed", error);
     }

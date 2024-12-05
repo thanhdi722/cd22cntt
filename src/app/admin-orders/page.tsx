@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, InputNumber, Menu } from "antd";
@@ -35,44 +34,18 @@ function Page() {
       const data = await response.json();
       setOrders(data);
     };
-<<<<<<< HEAD
 
     fetchOrders();
   }, []);
-=======
-    useEffect(() => {
-        const role = localStorage.getItem("role");
-        if (role !== "admin") {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("role");
-            window.location.href = "/login"; // Redirect to login page
-        }
-    }, []);
-    const handleDelete = async (id: string) => {
-        const productsDeleteApiUrl = `https://manager-rkz3.onrender.com/api/orders/${id}`;
-        const response = await fetch(productsDeleteApiUrl, {
-            method: "DELETE",
-        });
->>>>>>> 0b4961e2e1d9687b2e738cc87d3bed24517fae0f
 
-  const handleEdit = async (id: string) => {
-    const productApiUrl = `https://manager-rkz3.onrender.com/api/products/${id}`;
-    const response = await fetch(productApiUrl);
-    if (response.ok) {
-      const productToEdit = await response.json();
-      setNewProduct({
-        _id: productToEdit._id,
-        name: productToEdit.name,
-        price: productToEdit.price,
-        sold: productToEdit.sold,
-        image: productToEdit.image ? [productToEdit.image] : [],
-      });
-      console.log("Editing product:", productToEdit);
-    } else {
-      console.error("Failed to fetch product for editing");
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      window.location.href = "/login"; // Redirect to login page
     }
-  };
-
+  }, []);
   const handleDelete = async (id: string) => {
     const productsDeleteApiUrl = `https://manager-rkz3.onrender.com/api/orders/${id}`;
     const response = await fetch(productsDeleteApiUrl, {
@@ -91,6 +64,24 @@ function Page() {
     setTimeout(() => {
       setNotification(null);
     }, 3000);
+  };
+
+  const handleEdit = async (id: string) => {
+    const productApiUrl = `https://manager-rkz3.onrender.com/api/products/${id}`;
+    const response = await fetch(productApiUrl);
+    if (response.ok) {
+      const productToEdit = await response.json();
+      setNewProduct({
+        _id: productToEdit._id,
+        name: productToEdit.name,
+        price: productToEdit.price,
+        sold: productToEdit.sold,
+        image: productToEdit.image ? [productToEdit.image] : [],
+      });
+      console.log("Editing product:", productToEdit);
+    } else {
+      console.error("Failed to fetch product for editing");
+    }
   };
 
   const handleCreateProduct = async () => {
@@ -156,11 +147,10 @@ function Page() {
   };
 
   const handleUpdateOrderStatus = async (id: string) => {
-    // New function to update order status
     const response = await fetch(
       `https://manager-rkz3.onrender.com/api/orders/${id}/status`,
       {
-        method: "PATCH", // Use PUT method for updating status
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },

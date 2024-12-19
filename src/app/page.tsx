@@ -163,8 +163,8 @@ export default function MultiProductCatalog() {
   const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     // Check if window is defined to ensure this code runs only on the client
-    if (typeof window !== 'undefined') {
-      const storedUserId = localStorage.getItem('id_user');
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("id_user");
       setUserId(storedUserId || null);
     }
   }, []);
@@ -194,16 +194,23 @@ export default function MultiProductCatalog() {
         }
       );
       const result = await response.json();
-      console.log("Order created:", result);
-      setIsModalVisible(false);
 
-      // Show success notification
+      // Kiểm tra nếu có lỗi
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Có lỗi xảy ra khi đặt hàng");
+      }
+
+      setIsModalVisible(false);
       notification.success({
         message: "Đặt hàng thành công",
         description: "Đơn hàng của bạn đã được tạo thành công.",
       });
-    } catch (error) {
-      console.error("Error creating order:", error);
+    } catch (error: any) {
+      notification.error({
+        message: "Đặt hàng thất bại",
+        description:
+          "Có lỗi xảy ra khi tạo đơn hàng hoặc số lương hiện tại không đủ.",
+      });
     }
   };
 
@@ -214,10 +221,10 @@ export default function MultiProductCatalog() {
     >
       <div className="category-tabs"></div>
       <div className="flash-sale-banner">
-        <Image src={ic1} alt="" />
+        <img src={ic1.src} alt="" />
       </div>
       <div className="flash-sale-banner2">
-        <Image src={ic2} alt="" />
+        <img src={ic2.src} alt="" />
       </div>
       {/* <div className="rocket">
         <Image className="rocket-fly shake" src={imgRocket} alt="" />
@@ -226,10 +233,12 @@ export default function MultiProductCatalog() {
         <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
           <div className="w-1/4 md:w-auto">
             <a href="/" className="biolife-logo">
-              <Image
+              <img
                 src={logo.src}
                 alt="biolife logo"
                 className="w-32 h-auto logoheader"
+                width={100}
+                height={100}
               />
             </a>
           </div>
@@ -246,12 +255,15 @@ export default function MultiProductCatalog() {
                   handleSearch(e.target.value);
                 }}
               />
-              <button type="submit" className="absolute right-0 top-0 mt-2 mr-2 p-2">
+              <button
+                type="submit"
+                className="absolute right-0 top-0 mt-2 mr-2 p-2"
+              >
                 <i className="biolife-icon icon-search text-gray-500"></i>
               </button>
             </div>
           </div>
-          <div className="flex space-x-2 mt-4 md:mt-0" >
+          <div className="flex space-x-2 mt-4 md:mt-0">
             <button
               onClick={handleLogout}
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
@@ -259,9 +271,7 @@ export default function MultiProductCatalog() {
               Đăng Xuất
             </button>
             <Link href="/user">
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-              >
+              <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                 Thông tin
               </button>
             </Link>
@@ -277,8 +287,9 @@ export default function MultiProductCatalog() {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 rounded-md tab-button ${activeCategory === category ? "active" : ""
-                }`}
+              className={`px-4 py-2 rounded-md tab-button ${
+                activeCategory === category ? "active" : ""
+              }`}
               style={{
                 backgroundColor: activeCategory === category ? "blue" : "white",
                 color: activeCategory === category ? "white" : "black",
@@ -288,7 +299,6 @@ export default function MultiProductCatalog() {
             </button>
           ))}
         </div>
-
 
         <div>
           <div className="product-list-sale container mx-auto">
@@ -341,9 +351,9 @@ export default function MultiProductCatalog() {
                                       -
                                       {Math.ceil(
                                         100 -
-                                        (product?.price /
-                                          (product?.price + 1000000)) *
-                                        100
+                                          (product?.price /
+                                            (product?.price + 1000000)) *
+                                            100
                                       )}
                                       %
                                     </div>

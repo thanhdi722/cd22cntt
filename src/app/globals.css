@@ -115,3 +115,15 @@
     display: none;
   }
 }
+.w-search-input {
+  width: 500px;
+  @media (max-width: 768px) {
+    width: 150px;
+  }
+}
+.login-header {
+  width: 150px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+}

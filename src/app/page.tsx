@@ -15,7 +15,7 @@ import "../../public/assets/css/main-color.css";
 import "../app/admin/apple.scss";
 import ic1 from "../../public/imagefl1.png";
 import ic2 from "../../public/img2.png";
-import logo from "../../public/LOGO.png";
+import logo from "../../public/logo.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import { Spin } from "antd";
@@ -64,7 +64,14 @@ export default function MultiProductCatalog() {
   const [customerPhone, setCustomerPhone] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  const categories = ["Tất cả", "iPhone", "iPad", "MacBook", "Laptop", "Tai nghe"]; // Define categories
+  const categories = [
+    "Tất cả",
+    "iPhone",
+    "iPad",
+    "MacBook",
+    "Laptop",
+    "Tai nghe",
+  ]; // Define categories
 
   useEffect(() => {
     const checkToken = () => {
@@ -232,7 +239,10 @@ export default function MultiProductCatalog() {
       <header id="header" className="py-4 text-white shadow-md">
         <div className="container mx-auto flex flex-wrap items-center justify-between px-4">
           <div className="login-header">
-            <a href="/" style={{ display: "block", width: "150px", height: "150px" }}>
+            <a
+              href="/"
+              style={{ display: "block", width: "150px", height: "150px" }}
+            >
               <img
                 src={logo.src}
                 alt="biolife logo"
@@ -287,8 +297,9 @@ export default function MultiProductCatalog() {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 rounded-md tab-button ${activeCategory === category ? "active" : ""
-                }`}
+              className={`px-4 py-2 rounded-md tab-button ${
+                activeCategory === category ? "active" : ""
+              }`}
               style={{
                 backgroundColor: activeCategory === category ? "blue" : "white",
                 color: activeCategory === category ? "white" : "black",
@@ -350,9 +361,9 @@ export default function MultiProductCatalog() {
                                       -
                                       {Math.ceil(
                                         100 -
-                                        (product?.price /
-                                          (product?.price + 1000000)) *
-                                        100
+                                          (product?.price /
+                                            (product?.price + 1000000)) *
+                                            100
                                       )}
                                       %
                                     </div>

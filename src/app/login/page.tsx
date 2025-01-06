@@ -5,7 +5,7 @@ import "./index.scss";
 // import { Button } from "./ui/button";
 // import { Input } from "./ui/input";
 // import { EyeIcon } from "lucide-react";
-import logo from "../../../public/LOGO.png";
+import logo from "../../../public/logo.jpg";
 import background from "../../../public/bacground-login-2.jpg";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -49,8 +49,6 @@ export default function Component() {
       const role = data.role;
       window.location.href = role === "admin" ? "/admin" : "/";
     } catch (error) {
-
-
       alert("sai rồi nhập lại đi");
       console.error("Login failed", error);
     }
@@ -82,7 +80,7 @@ export default function Component() {
             />
           </div>
           <h1 className="text-2xl font-bold text-center mb-8">
-            We are The TECH ZONE
+            Hệ thống quản lý kho hàng
           </h1>
           <p className="text-muted-foreground mb-6">
             Please login to your account

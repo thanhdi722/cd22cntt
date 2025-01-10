@@ -15,7 +15,7 @@ import "../../public/assets/css/main-color.css";
 import "../app/admin/apple.scss";
 import ic1 from "../../public/imagefl1.png";
 import ic2 from "../../public/img2.png";
-import logo from "../../public/logo.jpg";
+import logo from "../../public/123123.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Spin } from "antd";
@@ -247,6 +247,7 @@ export default function MultiProductCatalog() {
                 src={logo.src}
                 alt="biolife logo"
                 className="w-64 h-auto logoheader"
+                style={{ borderRadius: "50%" }}
                 width={100}
                 height={100}
               />

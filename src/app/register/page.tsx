@@ -63,13 +63,10 @@ export default function Component() {
         <div className="content-login bg-gradient-to-br from-orange-500 via-red-500 to-purple-500 p-8 flex items-center justify-center text-white">
           <div className="max-w-md space-y-4">
             <h2 className="text-2xl font-bold">
-              We are more than just a company
+              Chào mừng đến với hệ thống quản lý kho hàng
             </h2>
             <p className="text-sm opacity-90">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              Hệ thống quản lý kho hàng được phát triển bởi DAP
             </p>
           </div>
         </div>
@@ -148,7 +145,7 @@ export default function Component() {
             </div>
             <button
               style={{ borderRadius: "5px" }}
-              className="w-full bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 hover:opacity-90 p-2"
+              className="w-full bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 hover:opacity-90 p-2 text-white"
               type="submit"
             >
               Đăng ký
@@ -158,7 +155,7 @@ export default function Component() {
             <span className="text-sm">Bạn đã có tài khoản?</span>
             <Link
               href="/login"
-              className="border-red-500 text-red-500 hover:bg-red-50"
+              className="border-red-500 text-red-500 hover:bg-red-50 "
             >
               Đăng nhập
             </Link>
